@@ -603,7 +603,9 @@ def main(args=None, model=None) -> GenerativeQAModule:
         return model
 
     # test() without a model tests using the best checkpoint automatically
-    trainer.test()
+    mleko = trainer.test()
+    print("[trainer.test()] OK!")
+    print(mleko)
     return model
 
 
@@ -624,3 +626,5 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     main(args)
+
+print("OK!")

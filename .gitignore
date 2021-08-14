@@ -2,3 +2,5 @@ bert/logs
 bert/results
 bert/squad
 rag/dataset
+rag/parsedDataset
+rag/ragOutput

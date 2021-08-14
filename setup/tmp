@@ -1,0 +1,19 @@
+virtualenv venv
+source venv/bin/activate
+pip install -r transformers/examples/research_projects/rag/requirements.txt
+pip install -r requirements.txt
+module load plgrid/tools/python-intel/3.6.2
+
+gitdb2==3.0.1
+python transformers/examples/research_projects/rag/use_own_knowledge_dataset.py
+
+python transformers/examples/research_projects/rag/finetune_rag.py --model_name_or_path rag_sequence --output_dir ft_rag_mleko --data_dir trainingSet
+
+srun --nodes=1 --ntasks=1 --mem=15000 --time=00:30:00 --pty /bin/bash
+srun -N 1 -n 2 --mem=5000 --partition=plgrid-gpu -A plglemkingpu3 --time=05:00:00 --gres=gpu:1 --pty /bin/bash
+
+srun -N 1 -n 2 --mem=25000 --partition=plgrid-gpu -A plglemkingpu3 --time=00:30:00 --gres=gpu:1 --pty /bin/bash
+
+python finetune_rag.py --model_name_or_path rag_sequence --output_dir ragOutput --data_dir trainingSet
+
+python finetune_rag.py --data_dir ./trainingSet --output_dir ./ragOutput --model_name_or_path facebook/rag-sequence-base --model_type rag_sequence --fp16 --gpus 1 --index_name custom --passages_path ./parsedDataset/my_knowledge_dataset --index_path ./parsedDataset/my_knowledge_dataset_hnsw_index.faiss
