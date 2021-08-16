@@ -106,3 +106,5 @@ trainer = Trainer(
 )
 
 trainer.train()
+
+trainer.save_model('train_output')
