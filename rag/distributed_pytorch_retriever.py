@@ -53,7 +53,9 @@ class RagPyTorchDistributedRetriever(RagRetriever):
         """
 
         logger.info("initializing retrieval")
-
+        import gc
+        gc.collect()
+        torch.cuda.empty_cache()
         # initializing a separate process group for retrieval as the default
         # nccl backend doesn't support gather/scatter operations while gloo
         # is too slow to replace nccl for the core gpu communication
@@ -61,9 +63,10 @@ class RagPyTorchDistributedRetriever(RagRetriever):
             logger.info("dist initialized")
             # needs to be set manually
             os.environ["GLOO_SOCKET_IFNAME"] = self._infer_socket_ifname()
+            # os.environ["GLOO_SOCKET_IFNAME"] = "lo"
             # avoid clash with the NCCL port
             os.environ["MASTER_PORT"] = str(distributed_port + 1)
-            self.process_group = dist.new_group(ranks=None, backend="gloo")
+            self.process_group = dist.new_group(ranks=None, backend="mpi")
 
         # initialize retriever only on the main worker
         if not dist.is_initialized() or self._is_main():
@@ -84,6 +87,7 @@ class RagPyTorchDistributedRetriever(RagRetriever):
 
     def _infer_socket_ifname(self):
         addrs = psutil.net_if_addrs()
+        print(addrs)
         # a hacky way to deal with varying network interface names
         ifname = next((addr for addr in addrs if addr.startswith("e")), None)
         return ifname

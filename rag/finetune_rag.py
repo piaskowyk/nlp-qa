@@ -1,5 +1,6 @@
 """Finetuning script for RAG models. Adapted from examples.seq2seq.finetune.py"""
-
+import transformers
+print(transformers.__version__)
 import argparse
 import logging
 import os

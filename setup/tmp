@@ -12,8 +12,15 @@ python transformers/examples/research_projects/rag/finetune_rag.py --model_name_
 srun --nodes=1 --ntasks=1 --mem=15000 --time=00:30:00 --pty /bin/bash
 srun -N 1 -n 2 --mem=5000 --partition=plgrid-gpu -A plglemkingpu3 --time=05:00:00 --gres=gpu:1 --pty /bin/bash
 
-srun -N 1 -n 2 --mem=25000 --partition=plgrid-gpu -A plglemkingpu3 --time=00:30:00 --gres=gpu:1 --pty /bin/bash
+srun -N 1 -n 2 --mem=20000 --partition=plgrid-gpu -A plglemkingpu3 --time=00:30:00 --gres=gpu:1 --pty /bin/bash
+srun -N 1 -n 2 --mem=25000 --partition=plgrid-gpu -A plglemkingpu3 --time=00:10:00 --gres=gpu:1 --pty /bin/bash
 
 python finetune_rag.py --model_name_or_path rag_sequence --output_dir ragOutput --data_dir trainingSet
 
 python finetune_rag.py --data_dir ./trainingSet --output_dir ./ragOutput --model_name_or_path facebook/rag-sequence-base --model_type rag_sequence --fp16 --gpus 1 --index_name custom --passages_path ./parsedDataset/my_knowledge_dataset --index_path ./parsedDataset/my_knowledge_dataset_hnsw_index.faiss
+
+
+
+wget --load-cookies /tmp/cookies.txt "https://docs.google.com/uc?export=download&confirm=$(wget --quiet --save-cookies /tmp/cookies.txt --keep-session-cookies --no-check-certificate 'https://docs.google.com/uc?export=download&id=1-heIthMBcUldU72Ia5ypzNOwRsKT8-U4' -O- | sed -rn 's/.*confirm=([0-9A-Za-z_]+).*/\1\n/p')&id=1-heIthMBcUldU72Ia5ypzNOwRsKT8-U4" -O wiki.zip && rm -rf /tmp/cookies.txt
+
+https://drive.google.com/file/d/1-heIthMBcUldU72Ia5ypzNOwRsKT8-U4/view?usp=sharing

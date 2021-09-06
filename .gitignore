@@ -4,3 +4,13 @@ bert/squad
 rag/dataset
 rag/parsedDataset
 rag/ragOutput
+venv
+rag/wiki.zip
+rag/testData.zip
+rag/wiki_csv
+rag/wiki_csv_parsed
+rag/test_data
+rag/trainingSet
+reg/lightning_logs
+lightning_logs
+__pycache__
